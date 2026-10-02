@@ -1,0 +1,31 @@
+<idea-plugin>
+  <id>vavi.idea.plugin.tweaks</id>
+  <name>Vavi Tweaks</name>
+  <vendor email="namachapanda2005@gmail.com">Umjammer</vendor>
+  <description><![CDATA[
+Small tweaks for java editing.
+<ul>
+  <li>Structure view shows junit5 <code>@DisplayName</code> values at right of method (and nested class) names.</li>
+  <li>Clicking a class or an interface in <code>extends</code>/<code>implements</code> highlights the methods overriding or implementing it.</li>
+  <li>Intentions and quick fixes (alt+enter popup, top fix in problem tooltips) are ordered by how often you used them.</li>
+</ul>
+]]></description>
+
+  <idea-version since-build="261"/>
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.java</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <lang.psiStructureViewFactory language="JAVA" order="first"
+                                  implementationClass="vavi.idea.plugin.tweaks.structure.DisplayNameStructureViewFactory"/>
+    <editorFactoryMouseListener implementation="vavi.idea.plugin.tweaks.highlight.SuperMethodsHighlighter"/>
+    <intentionsOrderProvider language="JAVA" order="first"
+                             implementationClass="vavi.idea.plugin.tweaks.intention.UsageIntentionsOrderProvider"/>
+  </extensions>
+
+  <applicationListeners>
+    <listener class="vavi.idea.plugin.tweaks.intention.IntentionUsageCommandListener"
+              topic="com.intellij.openapi.command.CommandListener"/>
+  </applicationListeners>
+</idea-plugin>
