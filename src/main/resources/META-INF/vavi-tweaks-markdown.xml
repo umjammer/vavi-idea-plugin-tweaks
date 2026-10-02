@@ -1,0 +1,10 @@
+<idea-plugin>
+  <projectListeners>
+    <listener class="vavi.idea.plugin.tweaks.markdown.MarkdownSplitOrientationFixer"
+              topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+  </projectListeners>
+  <applicationListeners>
+    <listener class="vavi.idea.plugin.tweaks.markdown.MarkdownSplitActionListener"
+              topic="com.intellij.openapi.actionSystem.ex.AnActionListener"/>
+  </applicationListeners>
+</idea-plugin>

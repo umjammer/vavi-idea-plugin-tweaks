@@ -24,6 +24,12 @@ small tweaks for intellij idea java editing
    * the alt+enter popup and the top fix of a problem tooltip are ordered by how many times you applied them
    * counts are stored in `vaviTweaksIntentionUsage.xml` in the ide config
    * java files only (`intentionsOrderProvider` is a per language extension)
+ * markdown editor
+   * the editor/preview split follows "Settings → Languages & Frameworks → Markdown → Preview layout"
+     * the ide ignores "Split horizontally" (preview below the editor) and always splits side by side,
+       or uses the orientation saved per file in the workspace
+   * the split button on the editor's toolbar changes the orientation of that editor (until it is reopened
+     or the setting is changed)
 
 ## References
 
