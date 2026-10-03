@@ -124,39 +124,15 @@
           <groupId>org.jsoup</groupId>
           <artifactId>jsoup</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>io.opentelemetry</groupId>
+          <artifactId>opentelemetry-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>com.jetbrains.intellij.java</groupId>
       <artifactId>java-psi</artifactId>
-      <version>${intellij.version}</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.amazon.ion</groupId>
-          <artifactId>ion-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.lz4</groupId>
-          <artifactId>lz4-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.jetbrains.intellij.platform</groupId>
-      <artifactId>lang-impl</artifactId>
       <version>${intellij.version}</version>
       <scope>provided</scope>
       <exclusions>
@@ -211,90 +187,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.jetbrains.intellij.platform</groupId>
-      <artifactId>lang-impl</artifactId>
-      <version>${intellij.version}</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.amazon.ion</groupId>
-          <artifactId>ion-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.lz4</groupId>
-          <artifactId>lz4-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.jetbrains.intellij.java</groupId>
-      <artifactId>java-impl</artifactId>
-      <version>${intellij.version}</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.amazon.ion</groupId>
-          <artifactId>ion-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.lz4</groupId>
-          <artifactId>lz4-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.jetbrains.intellij.platform</groupId>
-      <artifactId>lang-impl</artifactId>
-      <version>${intellij.version}</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.amazon.ion</groupId>
-          <artifactId>ion-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.lz4</groupId>
-          <artifactId>lz4-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.jetbrains.intellij.java</groupId>
       <artifactId>java-analysis-impl</artifactId>
       <version>${intellij.version}</version>
@@ -323,32 +215,16 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.jetbrains.intellij.platform</groupId>
-      <artifactId>lang-impl</artifactId>
+      <groupId>com.jetbrains.intellij.xml</groupId>
+      <artifactId>xml-psi</artifactId>
       <version>${intellij.version}</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.amazon.ion</groupId>
-          <artifactId>ion-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.lz4</groupId>
-          <artifactId>lz4-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.jsoup</groupId>
-          <artifactId>jsoup</artifactId>
-        </exclusion>
-      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.jetbrains.intellij.xml</groupId>
+      <artifactId>xml-parser</artifactId>
+      <version>${intellij.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.jetbrains.intellij.java</groupId>
