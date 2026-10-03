@@ -1,0 +1,8 @@
+<idea-plugin>
+  <projectListeners>
+    <listener class="vavi.idea.plugin.tweaks.xml.XmlFoldingKeeper"
+              topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+    <listener class="vavi.idea.plugin.tweaks.xml.XmlFoldingKeeper"
+              topic="com.intellij.openapi.fileEditor.FileEditorManagerListener$Before"/>
+  </projectListeners>
+</idea-plugin>

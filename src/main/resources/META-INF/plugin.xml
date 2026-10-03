@@ -9,6 +9,7 @@ Small tweaks for java editing.
   <li>Clicking a class or an interface in <code>extends</code>/<code>implements</code> highlights the methods overriding or implementing it.</li>
   <li>Intentions and quick fixes (alt+enter popup, top fix in problem tooltips) are ordered by how often you used them.</li>
   <li>Markdown editor/preview split follows the "Preview layout" setting (split horizontally is ignored by the ide), and defaults to split horizontally.</li>
+  <li>Folding states of xml files (e.g. pom.xml) are kept when the file is closed and reopened.</li>
 </ul>
 ]]></description>
 
@@ -17,6 +18,7 @@ Small tweaks for java editing.
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.java</depends>
   <depends optional="true" config-file="vavi-tweaks-markdown.xml">org.intellij.plugins.markdown</depends>
+  <depends optional="true" config-file="vavi-tweaks-xml.xml">com.intellij.modules.xml</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <lang.psiStructureViewFactory language="JAVA" order="first"
