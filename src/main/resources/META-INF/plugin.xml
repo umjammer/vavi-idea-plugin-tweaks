@@ -10,6 +10,7 @@ Small tweaks for java editing.
   <li>Intentions and quick fixes (alt+enter popup, top fix in problem tooltips) are ordered by how often you used them.</li>
   <li>Markdown editor/preview split follows the "Preview layout" setting (split horizontally is ignored by the ide), and defaults to split horizontally.</li>
   <li>Folding states of xml files (e.g. pom.xml) are kept when the file is closed and reopened.</li>
+  <li>In the completion popup of a <code>META-INF/services</code> file, shift enter inserts all implementations of the service (production sources of the module, already listed ones are skipped).</li>
 </ul>
 ]]></description>
 
@@ -26,7 +27,18 @@ Small tweaks for java editing.
     <editorFactoryMouseListener implementation="vavi.idea.plugin.tweaks.highlight.SuperMethodsHighlighter"/>
     <intentionsOrderProvider language="JAVA" order="first"
                              implementationClass="vavi.idea.plugin.tweaks.intention.UsageIntentionsOrderProvider"/>
+    <completion.contributor language="SPI"
+                            implementationClass="vavi.idea.plugin.tweaks.spi.ServiceProvidersCompletionContributor"/>
+    <actionPromoter implementation="vavi.idea.plugin.tweaks.spi.ServiceProvidersActionPromoter"/>
   </extensions>
+
+  <actions>
+    <action id="vavi.tweaks.InsertAllServiceProviders" class="vavi.idea.plugin.tweaks.spi.InsertAllServiceProvidersAction"
+            text="Insert All Service Providers"
+            description="In the completion popup of a META-INF/services file, inserts all implementations of the service">
+      <keyboard-shortcut keymap="$default" first-keystroke="shift ENTER"/>
+    </action>
+  </actions>
 
   <applicationListeners>
     <listener class="vavi.idea.plugin.tweaks.intention.IntentionUsageCommandListener"
