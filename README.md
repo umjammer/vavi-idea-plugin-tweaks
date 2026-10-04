@@ -38,6 +38,15 @@ small tweaks for intellij idea java editing
      * `idea.log` shows "restored n folding state(s) the platform forgot" when it worked,
        or "checked n folding state(s), the platform restored them" when nothing was needed
      * kept in memory for the session only, restarts are left to the ide
+ * service loader file (`META-INF/services/foo.bar.Baz`)
+   * in the completion popup (basic completion), `shift enter` inserts all implementations of the service at once
+     instead of the selected one (the popup shows "Press ⇧⏎ to insert all" at the bottom)
+   * candidates are classes in the production sources (not tests, not libraries) of the file's module
+     which `ServiceLoader` can load (public, concrete, static nested classes included, a public no-arg constructor
+     or a public static `provider()` method), matching the text typed in the line
+   * already listed classes are skipped, inserted ones are sorted
+   * the key is "Insert All Service Providers" in the keymap settings, it takes priority over
+     "Start New Line" only while the popup is shown
 
 ## References
 
