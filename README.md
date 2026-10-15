@@ -5,6 +5,8 @@
 
 # vavi-idea-plugin-tweaks
 
+<img alt="logo" src="src/test/resources/duke_idea_plugin_tweaks.png" width="160" />
+
 small tweaks for intellij idea java editing
 
 ## Install
@@ -23,7 +25,7 @@ small tweaks for intellij idea java editing
  * intentions/quick fixes
    * the alt+enter popup and the top fix of a problem tooltip are ordered by how many times you applied them
    * counts are stored in `vaviTweaksIntentionUsage.xml` in the ide config
-   * java files only (`intentionsOrderProvider` is a per language extension)
+   * java and xml files (incl. html, `intentionsOrderProvider` is a per language extension)
  * markdown editor
    * the editor/preview split follows "Settings → Languages & Frameworks → Markdown → Preview layout"
      * the setting defaults to "Split horizontally" (set once for each project, a later change is kept)
@@ -56,3 +58,8 @@ small tweaks for intellij idea java editing
 
  * intention ordering for other languages (kotlin etc.)
  * `IntentionsOrderProvider` is an `impl` package api, may break on ide updates
+ * idea updater
+
+---
+
+<sub>image designed by @umjammer, drawn by nano banana</sub>
