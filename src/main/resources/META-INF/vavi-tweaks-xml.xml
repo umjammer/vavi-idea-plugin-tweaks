@@ -1,4 +1,8 @@
 <idea-plugin>
+  <extensions defaultExtensionNs="com.intellij">
+    <intentionsOrderProvider language="XML" order="first"
+                             implementationClass="vavi.idea.plugin.tweaks.intention.UsageIntentionsOrderProvider"/>
+  </extensions>
   <projectListeners>
     <listener class="vavi.idea.plugin.tweaks.xml.XmlFoldingKeeper"
               topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
