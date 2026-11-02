@@ -11,6 +11,7 @@ Small tweaks for java editing.
   <li>Markdown editor/preview split follows the "Preview layout" setting (split horizontally is ignored by the ide), and defaults to split horizontally.</li>
   <li>Folding states of xml files (e.g. pom.xml) are kept when the file is closed and reopened.</li>
   <li>In the completion popup of a <code>META-INF/services</code> file, shift enter inserts all implementations of the service (production sources of the module, already listed ones are skipped).</li>
+  <li>"Math.clamp() can be used" is hidden where its quick fix makes a wrong replacement (a bound offered as the value to clamp, or a min not proven to be less than or equal to the max, then <code>Math.clamp()</code> throws).</li>
 </ul>
 ]]></description>
 
@@ -30,6 +31,8 @@ Small tweaks for java editing.
     <completion.contributor language="SPI"
                             implementationClass="vavi.idea.plugin.tweaks.spi.ServiceProvidersCompletionContributor"/>
     <actionPromoter implementation="vavi.idea.plugin.tweaks.spi.ServiceProvidersActionPromoter"/>
+    <lang.inspectionSuppressor language="JAVA"
+                               implementationClass="vavi.idea.plugin.tweaks.clamp.UnsafeClampMigrationSuppressor"/>
   </extensions>
 
   <actions>

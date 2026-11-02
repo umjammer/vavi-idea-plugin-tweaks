@@ -26,6 +26,15 @@ small tweaks for intellij idea java editing
    * the alt+enter popup and the top fix of a problem tooltip are ordered by how many times you applied them
    * counts are stored in `vaviTweaksIntentionUsage.xml` in the ide config
    * java and xml files (incl. html, `intentionsOrderProvider` is a per language extension)
+ * "Math.clamp() can be used" inspection (`MathClampMigration`, new in 2026.1)
+   * hidden where its quick fix makes a wrong replacement, also for "fix all" and code cleanup
+   * the ide's quick fix is buggy
+     * "brave mode" is on by default (its description says the opposite), every non-constant leaf of the nested call
+       is offered as the value to clamp in the source order, `Math.max(lo, Math.min(hi, x))` is offered
+       `Math.clamp(hi, lo, x)` first
+     * `min <= max` is never proven, `Math.clamp()` throws `IllegalArgumentException` if not
+       (e.g. `Math.min(d.length, Math.max(4, n))` → `Math.clamp(n, 4, d.length)` for an array shorter than 4)
+   * kept only if all values offered are right and the data flow proves `min <= max` for each
  * markdown editor
    * the editor/preview split follows "Settings → Languages & Frameworks → Markdown → Preview layout"
      * the setting defaults to "Split horizontally" (set once for each project, a later change is kept)
