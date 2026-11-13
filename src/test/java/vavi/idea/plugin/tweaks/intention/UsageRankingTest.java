@@ -36,21 +36,27 @@ class UsageRankingTest {
         assertEquals(0, ranking.textCount("Typing"));
     }
 
+    /** offers all and applies one, like a popup */
+    static void apply(UsageRanking ranking, List<Fix> offered, Fix applied) {
+        offered.forEach(f -> ranking.offer(f.text(), f.family()));
+        assertTrue(ranking.record(applied.text()));
+    }
+
     @Test
     void mostUsedFirst() {
         Fix a = new Fix("Make method 'void'", "Make method void");
         Fix b = new Fix("Safe delete 'foo'", "Safe delete");
         Fix c = new Fix("Suppress warning", "Suppress");
+        List<Fix> all = List.of(a, b, c);
         UsageRanking ranking = new UsageRanking();
-        List.of(a, b, c).forEach(f -> ranking.offer(f.text(), f.family()));
 
         // unused keeps the original order
-        assertEquals(List.of(a, b, c), ranking.sort(List.of(a, b, c), TEXT, FAMILY));
+        assertEquals(all, ranking.sort(all, TEXT, FAMILY));
 
-        assertTrue(ranking.record(c.text()));
-        assertTrue(ranking.record(b.text()));
-        assertTrue(ranking.record(c.text()));
-        assertEquals(List.of(c, b, a), ranking.sort(List.of(a, b, c), TEXT, FAMILY));
+        apply(ranking, all, c);
+        apply(ranking, all, b);
+        apply(ranking, all, c);
+        assertEquals(List.of(c, b, a), ranking.sort(all, TEXT, FAMILY));
     }
 
     @Test
@@ -59,26 +65,66 @@ class UsageRankingTest {
         Fix b = new Fix("Safe delete 'foo'", "Safe delete");
         Fix b2 = new Fix("Safe delete 'bar'", "Safe delete");
         UsageRanking ranking = new UsageRanking();
-        ranking.offer(b.text(), b.family());
-        ranking.record(b.text());
+        apply(ranking, List.of(b), b);
 
         // "bar" itself is never used, but its family is
         assertEquals(List.of(b2, a), ranking.sort(List.of(a, b2), TEXT, FAMILY));
     }
 
     @Test
-    void textPrecedesFamily() {
+    void familyPrecedesText() {
+        // a fixed text vs. texts with a parameter
+        Fix ignore = new Fix("Ignore vulnerable dependency", "Ignore vulnerable dependency");
+        Fix replace2 = new Fix("Replace 2 vulnerable transitive dependencies", "Replace vulnerable transitive dependencies");
+        Fix replace3 = new Fix("Replace 3 vulnerable transitive dependencies", "Replace vulnerable transitive dependencies");
+        Fix replace4 = new Fix("Replace 4 vulnerable transitive dependencies", "Replace vulnerable transitive dependencies");
+        UsageRanking ranking = new UsageRanking();
+        apply(ranking, List.of(ignore, replace2), ignore);
+        apply(ranking, List.of(ignore, replace2), ignore);
+        apply(ranking, List.of(ignore, replace2), replace2);
+        apply(ranking, List.of(ignore, replace3), replace3);
+        apply(ranking, List.of(ignore, replace4), replace4);
+        // ignore: text 2 family 2, replace2: text 1 family 3
+        assertEquals(List.of(replace2, ignore), ranking.sort(List.of(ignore, replace2), TEXT, FAMILY));
+    }
+
+    @Test
+    void textOrdersSameFamily() {
         Fix a = new Fix("A", "F1");
         Fix b1 = new Fix("B1", "F2");
         Fix b2 = new Fix("B2", "F2");
+        List<Fix> all = List.of(a, b1, b2);
         UsageRanking ranking = new UsageRanking();
-        List.of(a, b1, b2).forEach(f -> ranking.offer(f.text(), f.family()));
-        ranking.record("A");
-        ranking.record("B1");
-        ranking.record("B2");
-        // a: text 1 family 1, b2: text 1 family 2, b1: text 1 family 2
-        assertEquals(List.of(b1, b2, a), ranking.sort(List.of(a, b1, b2), TEXT, FAMILY));
-        ranking.record("A");
-        assertEquals(List.of(a, b1, b2), ranking.sort(List.of(a, b1, b2), TEXT, FAMILY));
+        apply(ranking, all, b1);
+        apply(ranking, all, b2);
+        apply(ranking, all, b2);
+        // b2: family 3 text 2, b1: family 3 text 1
+        assertEquals(List.of(b2, b1, a), ranking.sort(all, TEXT, FAMILY));
+    }
+
+    @Test
+    void oldOfferIsNotRecorded() {
+        long[] now = {0};
+        UsageRanking ranking = new UsageRanking(() -> now[0]);
+        ranking.offer("Copy", "Copy");
+        now[0] = UsageRanking.OFFER_TIMEOUT;
+        assertTrue(ranking.record("Copy"));
+        ranking.offer("Copy", "Copy");
+        now[0] += UsageRanking.OFFER_TIMEOUT + 1;
+        assertFalse(ranking.record("Copy"));
+        assertEquals(1, ranking.textCount("Copy"));
+    }
+
+    @Test
+    void recordedOnceForAnOffer() {
+        UsageRanking ranking = new UsageRanking();
+        ranking.offer("Copy", "Copy");
+        ranking.offer("Paste", "Paste");
+        assertTrue(ranking.record("Copy"));
+        // the same popup is not used twice, later commands with the same names are not intentions
+        assertFalse(ranking.record("Copy"));
+        assertFalse(ranking.record("Paste"));
+        assertEquals(1, ranking.textCount("Copy"));
+        assertEquals(0, ranking.textCount("Paste"));
     }
 }

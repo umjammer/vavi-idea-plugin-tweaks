@@ -5,7 +5,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-idea-plugin-tweaks</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
 
   <properties>
     <intellij.version>261.23567.138</intellij.version>
@@ -83,14 +83,14 @@
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bc-jdk18on-bom</artifactId>
-        <version>1.86.2</version>
+        <version>1.87</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-bom</artifactId>
-        <version>4.2.19.Final</version>
+        <version>4.2.20.Final</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -105,6 +105,14 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.lz4</groupId>
+          <artifactId>lz4-java</artifactId>
+        </exclusion>
+        <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-core</artifactId>
         </exclusion>
@@ -113,31 +121,69 @@
           <artifactId>jackson-databind</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>com.amazon.ion</groupId>
-          <artifactId>ion-java</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.lz4</groupId>
-          <artifactId>lz4-java</artifactId>
+          <groupId>io.opentelemetry</groupId>
+          <artifactId>opentelemetry-api</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.jsoup</groupId>
           <artifactId>jsoup</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>io.opentelemetry</groupId>
-          <artifactId>opentelemetry-api</artifactId>
+          <groupId>com.amazon.ion</groupId>
+          <artifactId>ion-java</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
 <dependency>
   <groupId>com.google.guava</groupId>
   <artifactId>guava</artifactId>
-  <version>33.7.2-jre</version>
+  <version>33.8.0-jre</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>org.lz4</groupId>
+  <artifactId>lz4-java</artifactId>
+  <version>1.8.1</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-core</artifactId>
+  <version>2.23.0</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+  <version>2.23.0</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>io.opentelemetry</groupId>
+  <artifactId>opentelemetry-api</artifactId>
+  <version>1.68.0</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>org.jsoup</groupId>
+  <artifactId>jsoup</artifactId>
+  <version>1.24.1</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>com.amazon.ion</groupId>
+  <artifactId>ion-java</artifactId>
+  <version>1.12.1</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>commons-codec</groupId>
+  <artifactId>commons-codec</artifactId>
+  <version>1.23.0</version>
   <scope>provided</scope>
 </dependency>
     <dependency>

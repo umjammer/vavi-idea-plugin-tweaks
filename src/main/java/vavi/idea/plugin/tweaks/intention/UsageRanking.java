@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 
 
 /**
@@ -19,10 +20,13 @@ import java.util.function.Function;
  * and sorts intentions by the counts.
  * <p>
  * an intention is counted by both its text (e.g. "Make method 'void'") and its family name
- * (e.g. "Make method void"), the text precedes the family.
+ * (e.g. "Make method void"), the family precedes the text. many texts contain a parameter
+ * (e.g. "Update version to 1.2.3"), their usages are spread over the texts but summed up in the family.
+ * the text only orders intentions of the same family count.
  * <p>
- * only texts offered recently by {@link #offer} are counted, so that commands other
- * than intentions (typing etc.) are not recorded.
+ * only texts offered by {@link #offer} within {@link #OFFER_TIMEOUT} are counted, so that commands other
+ * than intentions (typing, copy etc.) are not recorded. an applied intention clears the offers,
+ * one offer (a popup, a tooltip) is counted once.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2026-10-02 nsano initial version <br>
@@ -32,16 +36,34 @@ public class UsageRanking {
     /** max size of offered texts to remember */
     private static final int MAX_OFFERED = 1000;
 
+    /** offered texts older than this [ms] are not counted */
+    static final long OFFER_TIMEOUT = 60_000;
+
+    /** current time [ms] */
+    private final LongSupplier clock;
+
+    public UsageRanking() {
+        this(System::currentTimeMillis);
+    }
+
+    /** for tests */
+    UsageRanking(LongSupplier clock) {
+        this.clock = clock;
+    }
+
+    /** an offered intention */
+    private record Offer(String family, long time) {}
+
     /** key: text, value: count */
     final Map<String, Integer> textCounts = new ConcurrentHashMap<>();
 
     /** key: family name, value: count */
     final Map<String, Integer> familyCounts = new ConcurrentHashMap<>();
 
-    /** key: offered text, value: family name (or "" when unknown) */
-    private final Map<String, String> offered = new LinkedHashMap<>(16, 0.75f, true) {
+    /** key: offered text, value: family name (or "" when unknown) and when offered */
+    private final Map<String, Offer> offered = new LinkedHashMap<>(16, 0.75f, true) {
         @Override
-        protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+        protected boolean removeEldestEntry(Map.Entry<String, Offer> eldest) {
             return size() > MAX_OFFERED;
         }
     };
@@ -50,7 +72,7 @@ public class UsageRanking {
     public void offer(String text, String familyName) {
         if (text == null || text.isEmpty()) return;
         synchronized (offered) {
-            offered.put(text, familyName == null ? "" : familyName);
+            offered.put(text, new Offer(familyName == null ? "" : familyName, clock.getAsLong()));
         }
     }
 
@@ -64,9 +86,11 @@ public class UsageRanking {
         if (text == null) return false;
         String family;
         synchronized (offered) {
-            family = offered.get(text);
+            Offer offer = offered.get(text);
+            if (offer == null || clock.getAsLong() - offer.time() > OFFER_TIMEOUT) return false;
+            family = offer.family();
+            offered.clear();
         }
-        if (family == null) return false;
         textCounts.merge(text, 1, Integer::sum);
         if (!family.isEmpty()) familyCounts.merge(family, 1, Integer::sum);
         return true;
@@ -81,15 +105,16 @@ public class UsageRanking {
     }
 
     /**
-     * sorts by usages, descending. the sort is stable, so unused ones keep the original order.
+     * sorts by usages, descending, the family count first, then the text count.
+     * the sort is stable, so unused ones keep the original order.
      *
      * @param text extracts a text from an item
      * @param family extracts a family name from an item
      * @return a new sorted list
      */
     public <T> List<T> sort(List<T> items, Function<T, String> text, Function<T, String> family) {
-        Comparator<T> c = Comparator.<T>comparingInt(i -> textCount(text.apply(i)))
-                .thenComparingInt(i -> familyCount(family.apply(i)))
+        Comparator<T> c = Comparator.<T>comparingInt(i -> familyCount(family.apply(i)))
+                .thenComparingInt(i -> textCount(text.apply(i)))
                 .reversed();
         return items.stream().sorted(c).toList();
     }

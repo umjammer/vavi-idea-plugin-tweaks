@@ -24,6 +24,8 @@ small tweaks for intellij idea java editing
    * the highlights are removed by the next click, escape or a text change
  * intentions/quick fixes
    * the alt+enter popup and the top fix of a problem tooltip are ordered by how many times you applied them
+     * by the family first (e.g. "Update version" for "Update version to 1.2.3"), then by the text
+     * counted only when applied from a popup or a tooltip shown within a minute, once for each
    * counts are stored in `vaviTweaksIntentionUsage.xml` in the ide config
    * java and xml files (incl. html, `intentionsOrderProvider` is a per language extension)
  * "Math.clamp() can be used" inspection (`MathClampMigration`, new in 2026.1)
