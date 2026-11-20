@@ -86,7 +86,7 @@ public class XmlFoldingKeeper implements FileEditorManagerListener, FileEditorMa
         TextEditor editor = textEditor(source, file);
         if (editor == null) return;
         Map<String, Boolean> states = new HashMap<>();
-        ReadAction.run(() -> {
+        ReadAction.runBlocking(() -> {
             Map<String, FoldRegion> regions = regions(editor.getEditor());
             if (regions != null) regions.forEach((path, region) -> states.put(path, region.isExpanded()));
         });
@@ -149,7 +149,7 @@ public class XmlFoldingKeeper implements FileEditorManagerListener, FileEditorMa
     private void restore(TextEditor textEditor, Map<String, Boolean> states) {
         Editor editor = textEditor.getEditor();
         if (editor.isDisposed()) return;
-        Map<String, FoldRegion> regions = ReadAction.compute(() -> regions(editor));
+        Map<String, FoldRegion> regions = ReadAction.computeBlocking(() -> regions(editor));
         if (regions == null) return;
         Map<String, Boolean> current = new HashMap<>();
         regions.forEach((path, region) -> current.put(path, region.isExpanded()));
@@ -179,6 +179,8 @@ public class XmlFoldingKeeper implements FileEditorManagerListener, FileEditorMa
         return changes;
     }
 
+    /** no public accessor for CodeFoldingManagerImpl's key exists (263), so it's looked up by its name */
+    @SuppressWarnings("deprecation")
     private static boolean isFoldingInitialized(Editor editor) {
         Key<?> key = Key.findKeyByName(FOLDINGS_INITIALIZED);
         if (key == null) {
