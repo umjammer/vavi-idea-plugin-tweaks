@@ -5,10 +5,10 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-idea-plugin-tweaks</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
 
   <properties>
-    <intellij.version>261.23567.138</intellij.version>
+    <intellij.version>263.7307.200</intellij.version>
   </properties>
 
   <build>

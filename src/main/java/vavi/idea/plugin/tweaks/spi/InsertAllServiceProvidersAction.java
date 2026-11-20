@@ -100,7 +100,7 @@ public class InsertAllServiceProvidersAction extends AnAction {
         if (line < others.size()) others.remove(line);
 
         List<String> candidates = ProgressManager.getInstance().runProcessWithProgressSynchronously(
-                () -> ReadAction.compute(() -> candidates(project, file)), "Searching service providers", true, project);
+                () -> ReadAction.computeBlocking(() -> candidates(project, file)), "Searching service providers", true, project);
         if (candidates == null) return;
         List<String> names = missing(candidates, entries(others), typed);
         if (names.isEmpty()) {
